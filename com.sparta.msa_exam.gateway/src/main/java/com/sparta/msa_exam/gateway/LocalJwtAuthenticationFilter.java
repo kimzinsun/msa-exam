@@ -18,7 +18,7 @@ import javax.crypto.SecretKey;
 @Component
 public class LocalJwtAuthenticationFilter implements GlobalFilter {
 
-    @Value("${service.jwt.secret}")
+    @Value("${jwt.secret}")
     private String secretKey;
 
     @Override
