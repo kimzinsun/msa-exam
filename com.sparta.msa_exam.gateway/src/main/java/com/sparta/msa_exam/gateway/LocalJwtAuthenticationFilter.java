@@ -19,7 +19,7 @@ import javax.crypto.SecretKey;
 public class LocalJwtAuthenticationFilter implements GlobalFilter {
 
     @Value("${service.jwt.secret}")
-    private String secretKey;
+    String secretKey;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
