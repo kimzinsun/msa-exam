@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,15 +23,16 @@ public class ProductController {
     @PostMapping("")
     public ResponseEntity<?> createProduct(@RequestBody ProductReqDto productReqDto,
                                            @RequestHeader(value = "X-Role", required = true) String role) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("ServerPort", port);
-
-        if(!"MANAGER".equals(role)) {
-            return ResponseEntity.status(403).headers(headers).body("매니저 권한이 없습니다.");
+        if (!"MANAGER".equals(role)) {
+            return createResponse("Access denied", HttpStatus.FORBIDDEN);
         }
-        productService.createProduct(productReqDto);
 
-        return ResponseEntity.status(201).headers(headers).body("상품이 등록되었습니다.");
+        try {
+            productService.createProduct(productReqDto);
+            return createResponse("상품이 등록되었습니다.", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return createResponse("상품 등록에 실패했습니다.", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("")
@@ -40,5 +42,10 @@ public class ProductController {
         return ResponseEntity.status(200).headers(headers).body(productService.getProducts(pageable));
     }
 
+    private ResponseEntity<?> createResponse(String message, HttpStatus status) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("ServerPort", port);
+        return ResponseEntity.status(status).headers(headers).body(message);
+    }
 
 }
