@@ -2,6 +2,7 @@ package com.sparta.msa_exam.product;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,13 @@ public class ProductController {
         productService.createProduct(productReqDto);
 
         return ResponseEntity.status(201).headers(headers).body("상품이 등록되었습니다.");
+    }
+
+    @GetMapping("")
+    public ResponseEntity<?> getProducts(Pageable pageable) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("ServerPort", port);
+        return ResponseEntity.status(200).headers(headers).body(productService.getProducts(pageable));
     }
 
 
