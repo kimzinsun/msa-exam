@@ -26,4 +26,8 @@ public class ProductService {
         log.info(pageble.toString());
         return productRepository.findAll(pageble);
     }
+
+    public Product getProductById(Long productId) {
+        return productRepository.findById(productId).orElseThrow(() -> new IllegalArgumentException("Product not found"));
+    }
 }

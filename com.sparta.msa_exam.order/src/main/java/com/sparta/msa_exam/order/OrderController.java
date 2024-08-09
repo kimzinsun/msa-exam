@@ -22,5 +22,12 @@ public class OrderController {
         return orderService.createOrder(orderReqDto, userId);
     }
 
+//    @GetMapping("/{orderId}")
+//    public ResponseEntity<?> getOrderById(@PathVariable Long orderId,
+//                                          @RequestHeader(value = "X-User-Id", required = true) String userId,
+//                                          @RequestHeader(value = "X-Role", required = true) String role) {
+//        return orderService.getOrderById(orderId);
+//    }
+
 
 }

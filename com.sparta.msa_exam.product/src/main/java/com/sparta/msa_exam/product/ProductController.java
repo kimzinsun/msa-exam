@@ -1,6 +1,7 @@
 package com.sparta.msa_exam.product;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -37,15 +38,23 @@ public class ProductController {
 
     @GetMapping("")
     public ResponseEntity<?> getProducts(Pageable pageable) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("ServerPort", port);
-        return ResponseEntity.status(200).headers(headers).body(productService.getProducts(pageable));
+        return ResponseEntity.status(200).body(productService.getProducts(pageable));
     }
 
     private ResponseEntity<?> createResponse(String message, HttpStatus status) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("ServerPort", port);
         return ResponseEntity.status(status).headers(headers).body(message);
+    }
+
+
+    @GetMapping("/{productId}")
+    public ResponseEntity<?> getProductById(@PathVariable Long productId) {
+        try {
+            return ResponseEntity.status(200).body(productService.getProductById(productId));
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("상품이 존재하지 않습니다.");
+        }
     }
 
 }
