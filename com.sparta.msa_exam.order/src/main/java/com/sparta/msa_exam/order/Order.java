@@ -26,4 +26,13 @@ public class Order {
         return order;
 
     }
+
+    public void updateOrder(OrderReqDto orderReqDto) {
+        this.setName(orderReqDto.getName());
+        this.setOrder_item_id(orderReqDto.getProduct_id());
+    }
+
+    public void addProducts(List<Long> productId) {
+        this.order_item_id.addAll(productId);
+    }
 }

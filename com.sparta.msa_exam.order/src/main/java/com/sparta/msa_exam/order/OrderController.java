@@ -19,6 +19,14 @@ public class OrderController {
         return orderService.createOrder(orderReqDto, userId);
     }
 
+    @PutMapping("/{orderId}")
+    public ResponseEntity<?> updateOrder(@PathVariable Long orderId,
+                                         @RequestBody OrderReqDto orderReqDto,
+                                         @RequestHeader(value = "X-User-Id", required = true) String userId) {
+        return orderService.updateOrder(orderId, orderReqDto);
+    }
+
+
     @GetMapping("/{orderId}")
     public ResponseEntity<?> getOrderById(@PathVariable Long orderId) {
         try {
