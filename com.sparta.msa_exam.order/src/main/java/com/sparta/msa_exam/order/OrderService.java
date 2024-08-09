@@ -31,4 +31,12 @@ public class OrderService {
         }
     }
 
+    public OrderResDto getOrderById(Long orderId) {
+        try {
+            Order order = orderRespository.findById(orderId).orElseThrow(() -> new IllegalArgumentException("주문이 존재하지 않습니다."));
+            return OrderResDto.from(order);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

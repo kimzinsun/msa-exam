@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
     private final OrderService orderService;
 
-    @Value("${server.port}")
-    private String port;
-
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
     }
@@ -22,12 +19,15 @@ public class OrderController {
         return orderService.createOrder(orderReqDto, userId);
     }
 
-//    @GetMapping("/{orderId}")
-//    public ResponseEntity<?> getOrderById(@PathVariable Long orderId,
-//                                          @RequestHeader(value = "X-User-Id", required = true) String userId,
-//                                          @RequestHeader(value = "X-Role", required = true) String role) {
-//        return orderService.getOrderById(orderId);
-//    }
+    @GetMapping("/{orderId}")
+    public ResponseEntity<?> getOrderById(@PathVariable Long orderId) {
+        try {
+            OrderResDto orderResDto = orderService.getOrderById(orderId);
+            return ResponseEntity.status(200).body(orderResDto);
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("주문이 존재하지 않습니다.");
+        }
+    }
 
 
 }
