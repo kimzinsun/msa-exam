@@ -1,10 +1,7 @@
 package com.sparta.msa_exam.product;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
-    @Value("${server.port}")
-    private String port;
+
     private final ProductService productService;
 
     public ProductController(ProductService productService) {
@@ -38,13 +34,13 @@ public class ProductController {
 
     @GetMapping("")
     public ResponseEntity<?> getProducts(Pageable pageable) {
+
         return ResponseEntity.status(200).body(productService.getProducts(pageable));
     }
 
     private ResponseEntity<?> createResponse(String message, HttpStatus status) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("ServerPort", port);
-        return ResponseEntity.status(status).headers(headers).body(message);
+
+        return ResponseEntity.status(status).body(message);
     }
 
 
