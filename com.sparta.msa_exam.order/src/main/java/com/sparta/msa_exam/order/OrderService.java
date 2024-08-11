@@ -2,8 +2,10 @@ package com.sparta.msa_exam.order;
 
 import com.sparta.msa_exam.order.client.ProductClient;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,14 +32,10 @@ public class OrderService {
         }
     }
 
-    public OrderResDto getOrderById(Long orderId) {
-        Order order = getOrder(orderId);
-        return OrderResDto.from(order);
-    }
-
     public ResponseEntity<?> updateOrder(Long orderId, OrderReqDto orderReqDto) {
         try {
-            Order order = getOrder(orderId);
+            Order order = orderRespository.findById(orderId)
+                    .orElseThrow(IllegalArgumentException::new);
             validationProduct(orderReqDto.getProduct_id());
             order.addProducts(orderReqDto.getProduct_id());
             Order savedOrder = orderRespository.save(order);
@@ -49,9 +47,16 @@ public class OrderService {
         }
     }
 
-    public Order getOrder(Long orderId) {
-        return orderRespository.findById(orderId).orElseThrow(() -> new IllegalArgumentException("주문이 존재하지 않습니다."));
+
+    @Cacheable(cacheNames = "orderCache", key = "#orderId")
+    @Transactional(readOnly = true)
+    public OrderResDto getOrder(Long orderId) {
+        Order order = orderRespository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("주문이 존재하지 않습니다."));
+
+        return OrderResDto.from(order);
     }
+
 
     private void validationProduct(List<Long> productIds) {
         for (Long productId : productIds) {

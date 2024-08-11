@@ -3,12 +3,13 @@ package com.sparta.msa_exam.order;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @Entity
 @Table(name = "orders")
-public class Order {
+public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long order_id;
@@ -25,11 +26,6 @@ public class Order {
         order.setOrder_item_id(orderReqDto.getProduct_id());
         return order;
 
-    }
-
-    public void updateOrder(OrderReqDto orderReqDto) {
-        this.setName(orderReqDto.getName());
-        this.setOrder_item_id(orderReqDto.getProduct_id());
     }
 
     public void addProducts(List<Long> productId) {
