@@ -21,7 +21,7 @@ public class ProductController {
     public ResponseEntity<?> createProduct(@RequestBody ProductReqDto productReqDto,
                                            @RequestHeader(value = "X-Role", required = true) String role) {
         if (!"MANAGER".equals(role)) {
-            return createResponse("Access denied", HttpStatus.FORBIDDEN);
+            return createResponse("권한이 없습니다.", HttpStatus.FORBIDDEN);
         }
 
         try {
@@ -34,7 +34,6 @@ public class ProductController {
 
     @GetMapping("")
     public ResponseEntity<?> getProducts(Pageable pageable) {
-
         return ResponseEntity.status(200).body(productService.getProducts(pageable));
     }
 

@@ -1,4 +1,4 @@
-package com.sparta.msa_exam.order;
+package com.sparta.msa_exam.product;
 
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +24,7 @@ public class CacheConfig {
         RedisCacheConfiguration configuration = RedisCacheConfiguration
                 .defaultCacheConfig()
                 .disableCachingNullValues()
-                .entryTtl(Duration.ofSeconds(10))
+                .entryTtl(Duration.ofSeconds(60))
                 .computePrefixWith(CacheKeyPrefix.simple())
                 .serializeValuesWith(
                         SerializationPair.fromSerializer(RedisSerializer.java())
