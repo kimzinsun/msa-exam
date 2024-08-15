@@ -1,6 +1,6 @@
 # MSA exam
 
-> MSA 구성, Redis 캐싱, ~~Docker 기반 CI/CD 구성~~
+> MSA 구성, Redis 캐싱
 
 # 필수 기능
 
@@ -26,3 +26,22 @@
 ## 7. 상품 추가 API 호출 시 상품 목록 조회 API 응답 데이터 캐시가 갱신되도록 구현 ✅
 ## 8. 로컬과 서버 환경 분리 ✅
 
+---
+# 피드백 바탕으로 추가할 내용
+
+## 1. Exception handler 적용
+- try-catch 대신 Exception Handler를 사용해서 예외처리 통합 관리
+## 2. signUp 응답객체 변경
+- DTO 사용하여 응답처리
+- DIP(의존성 역전 원칙) 참고
+## 3. Service에서 DTO 사용
+- service에서 ResponseEntity 대신 DTO 반환, controller에서 ResponseEntity로 맵핑
+## 4. 디렉토리 구조 정리
+- 파일들을 디렉토리로 구분하여 정리
+- Layered Architecture 참고하여 디렉토리 구조 개선
+## 5. Entity 생성자 수정
+- Entity 클래스에서 DTO를 직접 받지않도록 수정
+- DTO-Entity 간 매퍼 클래스를 만들어 변환 작업 처리
+
+## 추가학습
+- 분산 환경에서 데이터 일관성 유지 방법 연구 (보상 트랜잭션, SAGA 패턴, 비관적 잠금 등 학습)
